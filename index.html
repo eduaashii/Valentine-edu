@@ -115,38 +115,6 @@
             text-align: center;
         }
 
-        /* Gallery Styles */
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-        .gallery img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
-        .gallery img:hover {
-            transform: scale(1.1);
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .memory-grid {
-                grid-template-columns: repeat(3, 1fr); /* Smaller grid on mobile */
-            }
-            .card {
-                width: 60px;
-                height: 60px;
-            }
-            .gallery img {
-                width: 100px;
-                height: 100px;
-            }
-        }
     </style>
 </head>
 <body>
