@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day, Eduu! 💕</title>
+    <!-- Google Fonts for romantic styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef, #ffecd2); /* Soft pink/red gradient */
+            color: #d63384; /* Romantic pink text */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #c2185b; /* Deeper red for headings */
+        }
+        section {
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white for sections */
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease; /* Smooth hover effect */
+        }
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ff69b4;
+            animation: float 6s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Timer Styles */
+        #timer {
+            font-size: 1.5em;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Game Styles */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4x4 grid for memory game */
+            gap: 10px;
+            max-width: 400px;
+        }
+        .card {
+            width: 80px;
+            height: 80px;
+            background: #ff69b4;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .card.flipped {
+            background: #fff;
+            transform: rotateY(180deg);
+        }
+        .hearts-game {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            background: rgba(255, 182, 193, 0.5);
+            border-radius: 10px;
+        }
+        .falling-heart {
+            position: absolute;
+            font-size: 30px;
+            color: #ff1493;
+            cursor: pointer;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            0% { top: -50px; left: var(--left); }
+            100% { top: 100%; left: var(--left); }
+        }
+        #score {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        /* Playlist Styles */
+        .spotify-embed {
+            text-align: center;
+        }
+
+        /* Gallery Styles */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .gallery img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr); /* Smaller grid on mobile */
+            }
+            .card {
+                width: 60px;
+                height: 60px;
+            }
+            .gallery img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div id="hearts-container"></div>
+
+    <div class="container">
+        <!-- Welcome Section -->
+        <section id="welcome">
+            <h1>Happy Valentine’s Day, Edur! 💕</h1>
+            <p style="text-align: center; font-size: 1.2em;">A special day to celebrate our love. I hope this makes you smile! 😘</p>
+        </section>
+
+        <!-- Relationship Timer -->
+        <section id="timer-section">
+            <h2>Our Love Story Timer</h2>
+            <p>We've been together since July 28, 2023. Here's how long it's been:</p>
+            <div id="timer">Calculating...</div>
+        </section>
+
+        <!-- Mini Games -->
+        <section id="games">
+            <h2>Let's Play!</h2>
+            <div class="game-container">
+                <!-- Memory Card Game -->
+                <h3>Memory Card Game: Match the Love Emojis!</h3>
+                <div class="memory-grid" id="memory-grid"></div>
+                <p id="memory-status">Click cards to flip and match pairs!</p>
+
+                <!-- Click the Hearts Game -->
+                <h3>Click the Hearts Game: Catch as many as you can!</h3>
+                <div class="hearts-game" id="hearts-game"></div>
+                <div id="score">Score: 0</div>
+            </div>
+        </section>
+
+        <!-- Our Playlist -->
+        <section id="playlist">
+            <h2>Our Playlist</h2>
+            <p>Listen to our favorite song: <strong>A Thousand Years – Christina Perri</strong>. Here's a Spotify embed for more!</p>
+            <div class="spotify-embed">
+                <!-- Replace with your own Spotify playlist URI if needed -->
+                <iframe src="https://open.spotify.com/embed/track/4kflIGiDxUzjYBHKbmSiYf" width="300" height="380" frameborder="0" allowtransparency="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section id="gallery">
+            <h2>Our Memories</h2>
+            <div class="gallery">
+                <!-- Placeholder images; replace src with your own -->
+                <img src="https://picsum.photos/200/200?random=1" alt="Memory 1">
+                <img src="https://picsum.photos/200/200?random=2" alt="Memory 2">
+                <img src="https://picsum.photos/200/200?random=3" alt="Memory 3">
+                <img src="https://picsum.photos/200/200?random=4" alt="Memory 4">
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Floating Hearts Animation
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '💖';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's'; // Random speed
+            document.getElementById('hearts-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 6000); // Remove after animation
+        }
+        setInterval(createHeart, 1000); // Create a heart every second
+
+        // Relationship Timer
+        function updateTimer() {
+            const startDate = new Date('2023-07-28T00:00:00'); // Edit this date if needed
+            const now = new Date();
+            const diff = now - startDate;
+
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('timer').textContent = `${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+            setTimeout(updateTimer, 1000); // Update every second
+        }
+        updateTimer();
+
+        // Memory Card Game
+        const emojis = ['💕', '😘', '🌹', '❤️', '💋', '🌸', '💖', '😍']; // Love-themed emojis
+        const cards = [...emojis, ...emojis]; // Duplicate for pairs
+        let shuffledCards = cards.sort(() => Math.random() - 0.5);
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        const grid = document.getElementById('memory-grid');
+        const status = document.getElementById('memory-status');
+
+        shuffledCards.forEach((emoji, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.emoji = emoji;
+            card.dataset.index = index;
+            card.addEventListener('click', flipCard);
+            grid.appendChild(card);
+        });
+
+        function flipCard() {
+            if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                this.classList.add('flipped');
+                this.textContent = this.dataset.emoji;
+                flippedCards.push(this);
+
+                // Play subtle sound (optional)
+                playSound('pop.mp3'); // Add a 'pop.mp3' file to the same directory for sound
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+
+        function checkMatch() {
+            if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
+                matchedPairs++;
+                status.textContent = `Great match! Pairs found: ${matchedPairs}`;
+                if (matchedPairs === emojis.length) {
+                    status.textContent = 'You won! All pairs matched! 💕';
+                }
+            } else {
+                flippedCards.forEach(card => {
+                    card.classList.remove('flipped');
+                    card.textContent = '';
+                });
+                status.textContent = 'No match, try again!';
+            }
+            flippedCards = [];
+        }
+
+        // Click the Hearts Game
+        let score = 0;
+        const gameArea = document.getElementById('hearts-game');
+        const scoreDisplay = document.getElementById('score');
+
+        function createFallingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'falling-heart';
+            heart.textContent = '💖';
+            heart.style.setProperty('--left', Math.random() * 90 + '%');
+            heart.addEventListener('click', () => {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                heart.remove();
+                playSound('click.mp3'); // Add a 'click.mp3' file for sound
+            });
+            gameArea.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000); // Remove if not clicked
+        }
+        setInterval(createFallingHeart, 2000); // New heart every 2 seconds
+
+        // Subtle Sound Effects (requires audio files in the same directory)
+        function playSound(file) {
+            try {
+                const audio = new Audio(file);
+                audio.volume = 0.3; // Low volume
+                audio.play();
+            } catch (e) {
+                // Ignore if audio fails (e.g., no file)
+            }
+        }
+    </script>
+</body>
+</html>
